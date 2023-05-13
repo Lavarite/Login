@@ -1,0 +1,134 @@
+import telebot
+from telebot import types
+bot = telebot.TeleBot("5992440857:AAEAdSnZiYdlS_LqUnpYE1e4_E4PI5_rCYQ", parse_mode=None)
+
+size = 5
+date = 7
+page = 1
+
+def extract_arg(arg):
+    return arg.split()[1:]
+
+button_next = types.InlineKeyboardButton('Наступна сторінка', callback_data='next')
+button_prev = types.InlineKeyboardButton('Попередня сторінка', callback_data='prev')
+
+keyboard = types.InlineKeyboardMarkup()
+keyboard.add(button_next)
+keyboard.add(button_prev)
+
+@bot.callback_query_handler(func=lambda call: True)
+def handle_query(call):
+    query = call.data.split('#')[0]
+    global page
+    if query=='next':
+        page+=1
+    elif query=='prev' and page>0:
+        page-=1
+
+
+@bot.message_handler(commands=['sort_date'])
+def sort_date(message):
+    try:
+        date = int(extract_arg(message.text)[0])
+    except ValueError:
+        bot.reply_to(message, 'Невірні вхідні данні. Повторіть ще раз!')
+    except IndexError:
+        bot.reply_to(message, 'Невірні вхідні данні. Повторіть ще раз!')
+
+@bot.message_handler(commands=['sort_size'])
+def sort_size(message):
+    try:
+        date = int(extract_arg(message.text)[0])
+    except ValueError:
+        bot.reply_to(message, 'Невірні вхідні данні. Повторіть ще раз!')
+    except IndexError:
+        bot.reply_to(message, 'Невірні вхідні данні. Повторіть ще раз!')
+
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+    bot.reply_to(message,'''Привіт!\nВибери предмет:
+                            Алгебра🔢 - /algebra
+                            Геометрія📐 - /geometry
+                            Фізика⚛️ - /physics
+                            Хімія🔬 - /chemistry
+                            Біогогія🦠 - /biology
+                            Українська мова🇺🇦 - /ukr
+                            Англійська мова🇬🇧 - /eng
+                            Зарубіжна література📖 - /worldliterarute
+                            Українська література📚 - /ukrliterature
+                            Фізкультура⚽ - /physicaleducation
+                            Інформатика💻 - /computerscience
+                            Технології🏭 - /technology
+                            Історія України⚔️ - /ukrhistory
+                            Всесвітня історія🏺 - /worldhistory
+                            Мистецтво🎨 - /art
+                            Правознавство⚖️ - /law
+                            ''', reply_markup=keyboard)
+
+
+@bot.message_handler(commands=['algebra'])
+def algebra(message):
+    bot.reply_to(message, 'algebra')
+
+@bot.message_handler(commands=['geometry'])
+def geometry(message):
+    bot.reply_to(message, 'geometry')
+
+@bot.message_handler(commands=['physics'])
+def physics(message):
+    bot.reply_to(message, 'physics')
+
+@bot.message_handler(commands=['chemistry'])
+def chemistry(message):
+    bot.reply_to(message, 'chemistry')
+
+@bot.message_handler(commands=['biology'])
+def biology(message):
+    bot.reply_to(message, 'biology')
+
+@bot.message_handler(commands=['ukr'])
+def ukr(message):
+    bot.reply_to(message, 'ukr')
+
+@bot.message_handler(commands=['eng'])
+def eng(message):
+    bot.reply_to(message, 'eng')
+
+@bot.message_handler(commands=['worldliterarute'])
+def worldliterarute(message):
+    bot.reply_to(message, 'worldliterarute')
+
+@bot.message_handler(commands=['ukrliterature'])
+def ukrliterature(message):
+    bot.reply_to(message, 'ukrliterature')
+
+@bot.message_handler(commands=['physicaleducation'])
+def physicaleducation(message):
+    bot.reply_to(message, 'physicaleducation')
+
+@bot.message_handler(commands=['computerscience'])
+def computerscience(message):
+    bot.reply_to(message, 'computerscience')
+
+@bot.message_handler(commands=['technology'])
+def technology(message):
+    bot.reply_to(message, 'technology')
+
+@bot.message_handler(commands=['ukrhistory'])
+def ukrhistory(message):
+    bot.reply_to(message, 'ukrhistory')
+
+@bot.message_handler(commands=['worldhistory'])
+def worldhistory(message):
+    bot.reply_to(message, 'worldhistory')
+
+@bot.message_handler(commands=['art'])
+def art(message):
+    bot.reply_to(message, 'art')
+
+@bot.message_handler(commands=['law'])
+def law(message):
+    bot.reply_to(message, 'law')
+
+
+bot.infinity_polling()
